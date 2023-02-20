@@ -20,5 +20,27 @@ class ListingController extends Controller
       'listing' => $listing
     ]);
   }
+
+  public function create()
+  {
+    return view('listings.create');
+  }
+
+  public function store(Request $request)
+  {
+    $formFields = $request->validate([
+      'title' => 'required|max:255',
+      'company' => 'required|max:255',
+      'location' => 'required|max:255',
+      'email' => 'required|max:255|unique:listings',
+      'website' => 'required|max:255|url',
+      'tags' => 'required|max:255',
+      'description' => 'required|max:5000'
+    ]);
+
+    Listing::create($formFields);
+
+    return redirect('/');
+  }
 }
 
