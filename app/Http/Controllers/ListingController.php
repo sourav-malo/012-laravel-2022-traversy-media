@@ -27,7 +27,7 @@ class ListingController extends Controller {
       'title' => 'required|max:255',
       'company' => 'required|max:255',
       'location' => 'required|max:255',
-      'email' => 'required|max:255|unique:listings',
+      'email' => 'required|max:255',
       'website' => 'required|max:255|url',
       'tags' => 'required|max:255',
       'description' => 'required|max:5000'
@@ -40,6 +40,32 @@ class ListingController extends Controller {
     Listing::create($formFields);
 
     return redirect('/')->with('message', 'Listing created successfully');
+  }
+
+  public function edit(Listing $listing) {
+    return view('listings.edit', [
+      'listing' => $listing
+    ]);
+  }
+
+  public function update(Request $request, Listing $listing) {
+    $formFields = $request->validate([
+      'title' => 'required|max:255',
+      'company' => 'required|max:255',
+      'location' => 'required|max:255',
+      'email' => 'required|max:255',
+      'website' => 'required|max:255|url',
+      'tags' => 'required|max:255',
+      'description' => 'required|max:5000'
+    ]);
+
+    if($request->hasFile('logo')) {
+      $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+    }
+
+    $listing->update($formFields);
+
+    return back()->with('message', 'Listing updated successfully');
   }
 }
 
