@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-  public function create() {
+  public function create()
+  {
     return view('users.register');
   }
 
-  public function store(Request $request) {
+  public function store(Request $request)
+  {
     $formFields = $request->validate([
       'name' => 'required|min:3',
       'email' => 'required|email|unique:users,email',
@@ -25,5 +27,15 @@ class UserController extends Controller
     auth()->login($user);
 
     return redirect('/')->with('message', 'Logged in and user created successfully');
+  }
+
+  public function destroy(Request $request)
+  {
+    auth()->logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/')->with('message', 'Logged out successfully');
   }
 }
