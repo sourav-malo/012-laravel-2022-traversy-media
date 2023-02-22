@@ -23,7 +23,8 @@ class ListingFactory extends Factory
       'location' => fake()->city(),
       'email' => fake()->companyEmail(),
       'website' => fake()->url(),
-      'description' => fake()->paragraph(5)
+      'description' => fake()->paragraph(5),
+      'user_id' => 1
     ];
   }
 }
